@@ -4,14 +4,15 @@
  */
 module.exports = {
   base: "/flutter_dev_utils/",
-  title: "flutter开发工具",
+  title: "Flutter开发手册",
   description: "Just playing around",
   theme: 'reco',
   themeConfig: {
+    author: "干将",
     subSidebar: 'auto',
     // 右上角导航
     nav: [
-      { text: 'Home', link: '/' },
+      { text: 'Home', link: '/', icon: 'reco-home' },
       { text: 'Guide', link: '/guide/' },
       { text: 'External', link: 'https://google.com' },
       {
@@ -25,11 +26,87 @@ module.exports = {
     ],
     sidebar: [
       {
-        title: 'vuepress测试',
-        path: '/guide/',
+        title: "介绍",
+        path: "/",
+        icon: 'reco-home'
+      },
+      {
+        title: '第一章: 业务',
+        path: '/business/',
         collapsable: false,
         children: [
-          '/',
+          { 
+            title: "布局", 
+            path: "/business/layout/",
+            collapsable: true,
+            children: [
+              {
+                title: "区域布局",
+                path: "/business/layout/area"
+              },
+              {
+                title: "页面布局",
+                path: "/business/layout/page_layout"
+              }
+            ]
+          },
+          {
+            title: "功能", 
+            path: "/business/function/",
+            collapsable: true,
+            children: [
+              {
+                title: "占位1",
+                path: "/business/function/zw"
+              },
+              {
+                title: "占位2",
+                path: "/business/function/zwc"
+              },
+            ]
+          }
+        ]
+      },
+      {
+        title: '第二章: 组件',
+        path: '/components/',
+        collapsable: false,
+        children: [
+          { 
+            title: "基础", 
+            path: "/components/base/", 
+            collapsable: true,
+            children: [
+              {
+                title: "文本家族及样式",
+                path: "/components/base/文本家族及样式"
+              }
+            ] 
+          },
+        ]
+      },
+      {
+        title: '第三章: 插件',
+        path: '/plug/',
+        collapsable: false,
+        children: [
+          '/'
+        ]
+      },
+      {
+        title: '第四章: 原理',
+        path: '/principle/',
+        collapsable: false,
+        children: [
+          '/'
+        ]
+      },
+      {
+        title: '第五章: 问题',
+        path: '/question/',
+        collapsable: false,
+        children: [
+          '/'
         ]
       },
     ],
