@@ -1,0 +1,10 @@
+{
+  "name": "flutter_dev_utils",
+  "version": "1.0.0",
+  "description": "flutter开发工具",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.9.7"
+  }
+}
