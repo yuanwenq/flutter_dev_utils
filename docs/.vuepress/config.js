@@ -6,7 +6,9 @@ module.exports = {
   base: "/flutter_dev_utils/",
   title: "flutter开发工具",
   description: "Just playing around",
+  theme: 'reco',
   themeConfig: {
+    subSidebar: 'auto',
     // 右上角导航
     nav: [
       { text: 'Home', link: '/' },
@@ -26,12 +28,11 @@ module.exports = {
         title: 'vuepress测试',
         path: '/guide/',
         collapsable: false,
-        sidebarDepth: 1,    // 可选的, 默认值是 1
         children: [
           '/',
         ]
       },
-    ]
+    ],
   },
   markdown: {
     // markdown-it-anchor 的选项
