@@ -18,6 +18,7 @@ class ComponentsView extends GetView<ComponentsController> {
     Color themeColor = Theme.of(context).primaryColor;
 
     return Scaffold(
+      extendBody: true,
       backgroundColor: const Color(0xffF3F4F6),
       body: Column(
         children: [

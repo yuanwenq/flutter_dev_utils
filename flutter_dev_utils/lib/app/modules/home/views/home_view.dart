@@ -12,17 +12,19 @@ class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
-          extendBody: true,
-          body: _buildView(),
-          bottomNavigationBar: _buildBottomNavigation(),
-        ));
+    return Scaffold(
+      extendBody: true,
+      backgroundColor: Colors.transparent,
+      body: _buildView(),
+      bottomNavigationBar: _buildBottomNavigation(),
+    );
   }
 
   _buildBottomNavigation() {
     return BottomNavigationBar(
       currentIndex: controller.currentIndex.value,
       onTap: (index) => controller.changeBottomNavigationIndex(index),
+      // backgroundColor: Colors.transparent,
       type: BottomNavigationBarType.fixed,
       unselectedItemColor: controller.defaultColor,
       selectedItemColor: controller.activeColor,
