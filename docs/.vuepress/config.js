@@ -72,6 +72,14 @@ module.exports = {
                 title: "轮播图实现",
                 path: "/business/function/swiper_image"
               },
+              {
+                title: "视频播放实现",
+                path: "/business/function/video_controller"
+              },
+              {
+                title: "短视频播放实现",
+                path: "/business/function/short_video"
+              },
             ]
           },
           {
@@ -97,6 +105,10 @@ module.exports = {
               {
                 title: "List类型使用手册",
                 path: "/business/data/list"
+              },
+              {
+                title: "Class类型使用手册",
+                path: "/business/data/class"
               },
             ]
           },
@@ -134,7 +146,11 @@ module.exports = {
               {
                 title: "Image相关使用",
                 path: "/components/base/image_use"
-              }
+              },
+              {
+                title: "输入框及表单",
+                path: "/components/base/input"
+              },
             ] 
           },
           { 
@@ -210,10 +226,10 @@ module.exports = {
                 title: "获取组件信息(宽高等)",
                 path: "/components/operate/get_component_info"
               },
-              // {
-              //   title: "Icon的使用方式",
-              //   path: "/components/container/icon_use"
-              // },
+              {
+                title: "Stack 事件穿透",
+                path: "/components/operate/stack_penetrate"
+              },
             ] 
           },
         ]
@@ -235,8 +251,8 @@ module.exports = {
         collapsable: false,
         children: [
           {
-            title: "占位",
-            path: "/principle/zw"
+            title: "APP生命周期",
+            path: "/principle/app_life"
           }
         ]
       },
@@ -246,8 +262,8 @@ module.exports = {
         collapsable: false,
         children: [
           {
-            title: "占位",
-            path: "/question/zw"
+            title: "iOS 调试与部署",
+            path: "/test/ios_test"
           }
         ]
       },
