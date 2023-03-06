@@ -8,7 +8,7 @@ module.exports = {
   description: "Just playing around",
   theme: 'reco',
   themeConfig: {
-    author: "干将",
+    author: "",
     subSidebar: 'auto',
     search: true,
     searchMaxSuggestions: 10,
@@ -37,6 +37,29 @@ module.exports = {
             title: "起步",
             path: "/start/"
           }
+        ]
+      },
+      {
+        title: '书籍笔记',
+        path: '/book/',
+        collapsable: false,
+        children: [
+          { 
+            title: "Flutter 语言基础", 
+            path: "/book/language_base",
+            collapsable: false,
+          },
+        ]
+      },
+      {
+        title: '组件集',
+        path: '/components/',
+        collapsable: false,
+        children: [
+          {
+            title: "Image 图片",
+            path: "/components/image_use"
+          },
         ]
       },
       {
@@ -123,115 +146,6 @@ module.exports = {
               },
             ]
           }
-        ]
-      },
-      {
-        title: '第二章: 组件',
-        path: '/components/',
-        collapsable: false,
-        children: [
-          { 
-            title: "基础组件", 
-            path: "/components/base/", 
-            collapsable: false,
-            children: [
-              {
-                title: "文本家族及样式",
-                path: "/components/base/text_family"
-              },
-              {
-                title: "Icon的使用方式",
-                path: "/components/base/icon_use"
-              },
-              {
-                title: "Image相关使用",
-                path: "/components/base/image_use"
-              },
-              {
-                title: "输入框及表单",
-                path: "/components/base/input"
-              },
-            ] 
-          },
-          { 
-            title: "布局组件", 
-            path: "/components/layout/", 
-            collapsable: false,
-            children: [
-              {
-                title: "线性布局(Row和Column)",
-                path: "/components/layout/row_and_column"
-              },
-              // {
-              //   title: "Icon的使用方式",
-              //   path: "/components/base/icon_use"
-              // },
-              // {
-              //   title: "Image相关使用",
-              //   path: "/components/base/image_use"
-              // }
-            ] 
-          },
-          { 
-            title: "容器类组件", 
-            path: "/components/container/", 
-            collapsable: false,
-            children: [
-              {
-                title: "容器组件(Container)",
-                path: "/components/container/container_component"
-              },
-              // {
-              //   title: "Icon的使用方式",
-              //   path: "/components/container/icon_use"
-              // },
-            ] 
-          },
-          { 
-            title: "滚动组件", 
-            path: "/components/scroll/", 
-            collapsable: false,
-            children: [
-              {
-                title: "tabbar与tabbarView",
-                path: "/components/scroll/tabbar_controller"
-              },
-              // {
-              //   title: "Icon的使用方式",
-              //   path: "/components/container/icon_use"
-              // },
-            ] 
-          },
-          { 
-            title: "绘制", 
-            path: "/components/draw/", 
-            collapsable: false,
-            children: [
-              {
-                title: "绘制基础",
-                path: "/components/draw/base"
-              },
-              // {
-              //   title: "Icon的使用方式",
-              //   path: "/components/container/icon_use"
-              // },
-            ] 
-          },
-          { 
-            title: "操作", 
-            path: "/components/operate/", 
-            collapsable: false,
-            children: [
-              {
-                title: "获取组件信息(宽高等)",
-                path: "/components/operate/get_component_info"
-              },
-              {
-                title: "Stack 事件穿透",
-                path: "/components/operate/stack_penetrate"
-              },
-            ] 
-          },
         ]
       },
       {

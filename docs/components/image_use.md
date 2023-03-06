@@ -37,7 +37,7 @@ Widget cachedBase64Image(BuildContext context,
 ### 注意 <Badge type="warning" text="waring"/>
 在 Flutter 中使用 base64 图片的格式必须是<span class="main-color">4的倍数</span>,否则会遇到下面的报错。这个base64在web中使用是没有问题的，具体原因可以参考下面的参考链接
 
-![base64_error_1](../images/base64_error_1.png)
+![base64_error_1](./images/base64_error_1.png)
 
 下面使用<span class="code-block-bg">base64.normalize()</span>对base64进行规范化，这个方法主要就是对base64进行`=`号补位，但是好家伙啊！！！它竟然还报错，明明是它官方的规范方法，竟然还能报错。
 
@@ -46,7 +46,7 @@ String base64String = base64.normalize(snapshot.data.data);
 var url = const Base64Decoder().convert(base64String);
 ```
 
-![base64_error_2](../images/base64_error_2.png)
+![base64_error_2](./images/base64_error_2.png)
 
 ::: warning
 出于某种原因，dart:convert 的 base64.decode 在用 = 填充的字符串上阻塞，并出现“填充错误前的无效编码”。即使您使用包自己的填充方法 base64.normalize 会使用正确的填充字符 = 填充字符串，也会发生这种情况。
