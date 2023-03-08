@@ -5,6 +5,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:study_demo/bloc/timer/timer.dart';
 import 'package:study_demo/config/config.dart';
 
 import 'pages/pages.dart';
@@ -66,7 +67,13 @@ class _MyHomePageState extends State<MyHomePage> {
       {"text": "异步任务", "widget": const AsyncTaskPage()},
       {"text": "Stream红绿灯", "widget": const StreamPage()},
       {"text": "计时器", "widget": const TimerPage()},
-      {"text": "test1", "widget": const TestPage()},
+      {
+        "text": "计时器 bloc",
+        "widget": BlocProvider<StopWatchBloc>(
+          create: (_) => StopWatchBloc(),
+          child: const TimerBlocPage(),
+        )
+      },
       {"text": "test1", "widget": const TestPage()},
       {"text": "test1", "widget": const TestPage()},
       {"text": "test1", "widget": const TestPage()},

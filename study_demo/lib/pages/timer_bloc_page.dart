@@ -7,12 +7,11 @@
  * @Desc: 
  */
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:study_demo/bloc/bloc.dart';
 import 'package:study_demo/pages/setting_page.dart';
 
 import '../components/components.dart';
-import '../model/model.dart';
-import '../var/var.dart';
 
 class TimerBlocPage extends StatefulWidget {
   const TimerBlocPage({super.key});
@@ -22,25 +21,7 @@ class TimerBlocPage extends StatefulWidget {
 }
 
 class _TimerBlocPageState extends State<TimerBlocPage> {
-  late Ticker _ticker;
-  StopWatchType _type = StopWatchType.none;
-  // Duration _duration = Duration.zero;
-  Duration dt = Duration.zero;
-  Duration lastDuration = Duration.zero;
-  final List<TimeRecord> _record = [];
-  ValueNotifier<Duration> _duration = ValueNotifier(Duration.zero);
-
-  @override
-  void initState() {
-    super.initState();
-    _ticker = Ticker(_onTick);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _ticker.dispose();
-  }
+  StopWatchBloc get stopWatchBloc => BlocProvider.of<StopWatchBloc>(context);
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +48,11 @@ class _TimerBlocPageState extends State<TimerBlocPage> {
   // 负责构建秒表面板
   Widget buildStopwatchPanel() {
     double radius = MediaQuery.of(context).size.width / 2 * 0.75;
-    return ValueListenableBuilder<Duration>(
-        valueListenable: _duration,
-        builder: (_, value, __) => StopwatchWidget(
+    return BlocBuilder<StopWatchBloc, StopWatchState>(
+        buildWhen: (p, n) => p.duration != n.duration, // 控制是否触发更新
+        builder: (_, state) => StopwatchWidget(
               radius: radius,
-              duration: _duration.value,
+              duration: state.duration,
               themeColor: Theme.of(context).primaryColor,
             ));
   }
@@ -79,18 +60,22 @@ class _TimerBlocPageState extends State<TimerBlocPage> {
   // 负责构建记录面板
   Widget buildRecordPanel() {
     return Expanded(
-      child: RecordPanel(record: _record),
+      child: BlocBuilder<StopWatchBloc, StopWatchState>(
+          buildWhen: (p, n) => p.durationRecord != n.durationRecord,
+          builder: (_, state) => RecordPanel(record: state.durationRecord)),
     );
   }
 
   // 负责构建逻辑操作按钮
   Widget buildTools() {
-    return ButtonTools(
-      state: _type,
-      onReset: onReset,
-      onRecoder: onRecoder,
-      toggle: toggle,
-    );
+    return BlocBuilder<StopWatchBloc, StopWatchState>(
+        buildWhen: (p, n) => p.type != n.type,
+        builder: (_, state) => ButtonTools(
+              state: state.type,
+              onReset: onReset,
+              onRecoder: onRecoder,
+              toggle: toggle,
+            ));
   }
 
   List<Widget> buildActions() {
@@ -126,41 +111,9 @@ class _TimerBlocPageState extends State<TimerBlocPage> {
     }
   }
 
-  void onReset() {
-    setState(() {
-      _duration = ValueNotifier(Duration.zero);
-      _type = StopWatchType.none;
-      _record.clear();
-    });
-  }
+  void onReset() => stopWatchBloc.add(const ResetStopWatch());
 
-  void onRecoder() {
-    Duration current = _duration.value;
-    Duration addition = _duration.value;
-    if (_record.isNotEmpty) {
-      addition = _duration.value - _record.last.record;
-    }
-    setState(() {
-      _record.add(TimeRecord(record: current, addition: addition));
-    });
-  }
+  void onRecoder() => stopWatchBloc.add(const RecordeStopWatch());
 
-  void toggle() {
-    bool running = _type == StopWatchType.running;
-    if (running) {
-      _ticker.stop();
-      lastDuration = Duration.zero;
-    } else {
-      _ticker.start();
-    }
-    setState(() {
-      _type = running ? StopWatchType.stopped : StopWatchType.running;
-    });
-  }
-
-  void _onTick(Duration elapsed) {
-    dt = elapsed - lastDuration;
-    _duration.value += dt;
-    lastDuration = elapsed;
-  }
+  void toggle() => stopWatchBloc.add(const ToggleStopWatch());
 }

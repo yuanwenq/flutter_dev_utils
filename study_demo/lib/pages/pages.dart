@@ -9,3 +9,4 @@ export './async_task.dart';
 export './stream_demo.dart';
 export './timer_page.dart';
 export './setting_page.dart';
+export './timer_bloc_page.dart';
