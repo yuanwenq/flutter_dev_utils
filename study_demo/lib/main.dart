@@ -2,15 +2,20 @@
  * @Date: 2023-03-06
  * @Desc: 
  */
-import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:study_demo/config/config.dart';
 
 import 'pages/pages.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 void main() {
-  print(Directory.current.path);
-  runApp(const MyApp());
+  runApp(BlocProvider<AppConfigBloc>(
+    create: (_) => AppConfigBloc(appConfig: AppConfig.defaultConfig()),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -19,13 +24,18 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Study Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(),
-    );
+    return BlocBuilder<AppConfigBloc, AppConfig>(
+        builder: (_, state) => MaterialApp(
+              title: 'Flutter Study Demo',
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              locale: state.locale,
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                  // primarySwatch: Colors.blue,
+                  primaryColor: state.themeColor),
+              home: const MyHomePage(),
+            ));
   }
 }
 
@@ -54,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
       {"text": "test", "widget": const TestPage()},
       {"text": "异步任务", "widget": const AsyncTaskPage()},
       {"text": "Stream红绿灯", "widget": const StreamPage()},
-      {"text": "test1", "widget": const TestPage()},
+      {"text": "计时器", "widget": const TimerPage()},
       {"text": "test1", "widget": const TestPage()},
       {"text": "test1", "widget": const TestPage()},
       {"text": "test1", "widget": const TestPage()},

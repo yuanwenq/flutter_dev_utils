@@ -6,3 +6,4 @@ library model;
 
 export './task_result.dart';
 export './signal_type.dart';
+export './time_record.dart';
