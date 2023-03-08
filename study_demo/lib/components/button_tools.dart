@@ -7,7 +7,8 @@
  * @Desc: 
  */
 import 'package:flutter/material.dart';
-import 'package:study_demo/pages/timer_page.dart';
+
+import '../var/var.dart';
 
 class ButtonTools extends StatelessWidget {
   final StopWatchType state;

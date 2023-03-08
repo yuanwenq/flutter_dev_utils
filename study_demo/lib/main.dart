@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    // Bloc 状态类变化实现局部构建
     return BlocBuilder<AppConfigBloc, AppConfig>(
         builder: (_, state) => MaterialApp(
               title: 'Flutter Study Demo',

@@ -1,4 +1,8 @@
 /*
+ * @Date: 2023-03-08
+ * @Desc: 
+ */
+/*
  * @Date: 2023-03-05
  * @Desc: 
  */
@@ -10,14 +14,14 @@ import '../components/components.dart';
 import '../model/model.dart';
 import '../var/var.dart';
 
-class TimerPage extends StatefulWidget {
-  const TimerPage({super.key});
+class TimerBlocPage extends StatefulWidget {
+  const TimerBlocPage({super.key});
 
   @override
-  State<TimerPage> createState() => _TimerPageState();
+  State<TimerBlocPage> createState() => _TimerBlocPageState();
 }
 
-class _TimerPageState extends State<TimerPage> {
+class _TimerBlocPageState extends State<TimerBlocPage> {
   late Ticker _ticker;
   StopWatchType _type = StopWatchType.none;
   // Duration _duration = Duration.zero;
