@@ -15,16 +15,6 @@ module.exports = {
     // 右上角导航
     nav: [
       { text: 'Home', link: '/', icon: 'reco-home' },
-      // { text: 'Guide', link: '/guide/' },
-      // { text: 'External', link: 'https://google.com' },
-      // {
-      //   text: 'Languages',
-      //   ariaLabel: 'Language Menu',
-      //   items: [
-      //     { text: 'Chinese', link: '/language/chinese/' },
-      //     { text: 'Japanese', link: '/language/japanese/' }
-      //   ]
-      // }
     ],
     sidebar: [
       {
@@ -52,18 +42,18 @@ module.exports = {
         ]
       },
       {
-        title: '组件集',
+        title: '1.组件集',
         path: '/components/',
         collapsable: false,
         children: [
           {
-            title: "Image 图片",
+            title: "Image",
             path: "/components/image_use"
           },
         ]
       },
       {
-        title: '第一章: 业务',
+        title: '2.业务操作',
         path: '/business/',
         collapsable: false,
         children: [
