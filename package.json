@@ -9,6 +9,7 @@
     "docs:build": "vuepress build docs"
   },
   "devDependencies": {
+    "markdown-it-task-lists": "^2.1.1",
     "vuepress": "^1.9.7",
     "vuepress-plugin-fulltext-search": "^2.2.1"
   },
