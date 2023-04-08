@@ -39,7 +39,7 @@ Widget cachedBase64Image(BuildContext context,
 
 ![base64_error_1](./images/base64_error_1.png)
 
-下面使用<span class="code-block-bg">base64.normalize()</span>对base64进行规范化，这个方法主要就是对base64进行`=`号补位，但是好家伙啊！！！它竟然还报错，明明是它官方的规范方法，竟然还能报错。
+下面使用<span class="e-1">base64.normalize()</span>对base64进行规范化，这个方法主要就是对base64进行`=`号补位，但是好家伙啊！！！它竟然还报错，明明是它官方的规范方法，竟然还能报错。
 
 ``` dart{1}
 String base64String = base64.normalize(snapshot.data.data);

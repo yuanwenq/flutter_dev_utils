@@ -89,6 +89,7 @@ title: "macOS文件上传工具"
 ## JSON to dart model
 
 - [Getx 生成model]()
+- [JSON to Dart](https://javiercbk.github.io/json_to_dart/)
 - [https://app.quicktype.io/](https://app.quicktype.io/)
 
 ## 业务处理
@@ -208,7 +209,56 @@ Future<Uint8List> compressImage(ui.Image image) async {
 
 断电续传，也就分片上传。就是一点一点的上传文件
 
+**:warning: 使用 Isolate 注意的点:**
+
+1. 函数必须是<span class="e-1">静态函数</span>或者<span class="e-1">全局函数</span>
+2. Isolate的特有环境，无法在Isolate里使用外部的<span class="e-1">GetStorage</span>、<span class="e-1">shared_preferences</span>，因为这些都是在主线程进行了初始化和持久化
+
 ```dart
+/// 执行隔离上传任务
+Future doTask(Map dataItem) async {
+  // 定义主线程的 接收端口 与 发送端口
+  final receivePort = ReceivePort();
+  receivePort.listen(handleMessage);
+  // 开始创建主线程
+  var isolate = await Isolate.spawn(
+      uploadVideoIsolate,
+      [
+        dataItem,
+        receivePort.sendPort,
+        boxStorage.read("user_token"), // 外部传入，内部无法使用外部GetStorage
+        boxStorage.read("user_id") // 外部传入，内部无法使用外部GetStorage
+      ],
+      onError: receivePort.sendPort,
+      onExit: receivePort.sendPort);
+  isolateList.add({"id": dataItem["id"], "isolate": isolate});
+}
+
+/// 定义主线程监听回调
+/// - 修改数据上传进度
+/// - 上传成功/失败
+void handleMessage(dynamic msg) async {
+  if (msg is String) {
+    print(msg);
+  }
+  if (msg is num) {
+    state.dataList.first['progress'] = msg;
+    state.dataList.refresh();
+  }
+  if (msg is Map) {
+    if (msg['info'] == 'upload_progress') {
+      uploadUpdateProgress(msg);
+    }
+    if (msg['info'] == 'upload_success') {
+      uploadSuccess(msg['data']);
+    }
+    if (msg['info'] == 'upload_error') {
+      uploadError(msg['data'], msg["errorData"]);
+    }
+  }
+}
+
+// 隔离上传任务
 static void uploadVideoIsolate(params) async {
   // 开始上传
   File file = File(params[0]['videoUrlFs'] ?? params[0]['videoUrl']);
@@ -287,8 +337,68 @@ static void uploadVideoIsolate(params) async {
     Isolate.exit(params[1], "Isolate finally");
   }
 }
+
+// 文件-断点续传API
+static Future<UploadModel?> uploadFileBlock(
+    {required Uint8List fileBlock,
+    required int fileLength,
+    required int offset,
+    required int chunkSize,
+    required String fileMD5,
+    required String headerToken,
+    required int userId}) async {
+  try {
+    var fileBytes = dio.MultipartFile.fromBytes(fileBlock, filename: 'blob_data');
+    var formData = dio.FormData.fromMap({
+      "userId": userId,
+      "fileSize": fileLength,
+      "chunkSize": chunkSize,
+      "fileMd5": fileMD5,
+      "offset": offset,
+      "files": fileBytes,
+      "fileType": "mp4"
+      ...
+    });
+    var response = await HttpUtil().postIsolate("/upload/fileBlock",
+        data: formData,
+        options: Options(headers: {"X-Access-Token": headerToken}));
+    return UploadModel.fromJson(response);
+  } catch (e) {
+    print(e);
+  }
+  return null;
+}
 ```
+
+**参考:**
+
+- [flutter dio分片上传](https://juejin.cn/post/6932705821432217614#heading-2)
+- [搞懂Dart异步并封装Isolate](https://www.jianshu.com/p/a4a871995f82)
+- [【Flutter 异步编程 - 捌】 | 计算耗时？ Isolate 来帮忙](https://juejin.cn/post/7163431846783483912)
 
 ## 项目打包/调试
 
+官方介绍
+快速简要介绍下列三种构建模式：
+
+- 开发过程中，需要使用 热重载 功能，请选择 `debug` 构建模式；
+- 当你需要分析性能的时候，选择使用 `profile` 构建模式；
+- 发布应用的时候，需要选择使用 `release` 构建模式。
+
+打包执行命令
+
+```shell
+flutter build macos
+```
+
+正式环境运行/调试
+```shell
+# 运行正式环境，查看日志输出
+flutter run --release
+# 运行正式环境，性能分析
+flutter run --profile
+```
+
+### 参考：
+- [Flutter 的构建模式选择](https://flutter.cn/docs/testing/build-modes)
 - [Build Flutter 3.0 MacOS apps and games — DMG installer](https://medium.com/flutter-community/build-flutter-macos-apps-and-games-dmg-installer-f8ced960ced)
