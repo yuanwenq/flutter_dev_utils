@@ -204,6 +204,91 @@ Future<Uint8List> compressImage(ui.Image image) async {
 }
 ```
 
+### 使用Isolate断点续传
+
+断电续传，也就分片上传。就是一点一点的上传文件
+
+```dart
+static void uploadVideoIsolate(params) async {
+  // 开始上传
+  File file = File(params[0]['videoUrlFs'] ?? params[0]['videoUrl']);
+  var sFile = await file.open();
+
+  try {
+    int fileLength = sFile.lengthSync();
+    int chunkSize = 1024 * 1024;
+    int x = 0;
+    int offset = 0;
+    String fileMD5 = "";
+
+    while (x < fileLength) {
+      // 是否为最后一片
+      bool isLast = fileLength - x >= chunkSize ? false : true;
+      // 最后一次
+      int len = isLast ? fileLength - x : chunkSize;
+      // 获取一片
+      Uint8List fileBlock = sFile.readSync(len);
+      // 第一片 MD5加密
+      if (fileMD5 == "") {
+        fileMD5 = UtilsTools.upsetString(md5.convert(fileBlock).toString());
+      }
+
+      // 将分出来的 bytes 上传
+      var result = await UploadAPI.uploadFileBlock(
+          fileBlock: fileBlock,
+          fileLength: fileLength,
+          offset: offset,
+          chunkSize: len,
+          fileMD5: fileMD5,
+          headerToken: params[2],
+          userId: params[3]);
+
+      // 相应结果返回
+      if (result!.code == 0) {
+        // 持续上传中
+        if (result.data.status == 100) {
+          var progress = result.data.offset / fileLength >= 1
+              ? 1
+              : result.data.offset / fileLength;
+          params[1].send({
+            "info": "upload_progress",
+            "progress": progress,
+            "videoId": params[0]['id']
+          });
+          offset = result.data.offset;
+        }
+        // 上传成功
+        else if (result.data.status == 0) {
+          if (params[0]['videoType'] == 2) {
+            params[0]['videoUrlFs'] = result.data.path;
+          } else {
+            params[0]['videoUrl'] = result.data.path;
+          }
+          params[1].send({"info": "upload_success", "data": params[0]});
+        }
+        // 上传失败
+        else {
+          params[1].send({
+            "info": "upload_error",
+            "data": params[0],
+            "errorData": result.data
+          });
+          break;
+        }
+      }
+
+      x += len; // 记录已经取出来的长度
+    }
+  } catch (e) {
+    print(e);
+    params[1].send(e);
+  } finally {
+    sFile.close();
+    Isolate.exit(params[1], "Isolate finally");
+  }
+}
+```
+
 ## 项目打包/调试
 
 - [Build Flutter 3.0 MacOS apps and games — DMG installer](https://medium.com/flutter-community/build-flutter-macos-apps-and-games-dmg-installer-f8ced960ced)
