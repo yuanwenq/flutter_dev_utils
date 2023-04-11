@@ -82,3 +82,15 @@ cnNumUnits.difference(part); // 补集
 Set 的场景有聚合体中有元素不重复的需求，或者需要进行集合间的运算
 
 ### Map 映射
+
+<span class="e-1">映射</span>是什么？而且为什么叫<span class="e-1">map</span>?,<span class="e-1">map</span>在英文中是地图的意思，那么地图和映射有什么关系。地图本质上是<span class="e-1">圆点</span>和<span class="e-1">真实位置</span>的对应关系。把一个事物，与另一个事物相对应，这本身就是<span class="e-1">映射</span>。所以，映射记录的是两个事物之间的联系。
+
+<span class="e-1">Dart</span>中映射通过<span class="e-1">{}</span>进行定义，其中包含若干个<span class="e-1">key: value</span>的键值对。映射关系最典型的就是字典，也有的编程语言把<span class="e-1">映射型</span>称为<span class="e-1">子典型</span>
+
+```dart
+Map<String, String> dict = {
+  'about': '关于',
+  'boot': '启动',
+  'card': '卡片'
+};
+```
